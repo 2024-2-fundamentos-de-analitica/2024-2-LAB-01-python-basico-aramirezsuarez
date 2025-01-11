@@ -1,11 +1,3 @@
-"""
-Escriba el codigo que ejecute la accion solicitada en cada pregunta. Los
-datos requeridos se encuentran en el archivo data.csv. En este laboratorio
-solo puede utilizar las funciones y librerias basicas de python. No puede
-utilizar pandas, numpy o scipy.
-"""
-
-
 def pregunta_04():
     """
     La columna 3 contiene una fecha en formato `YYYY-MM-DD`. Retorne la
@@ -26,3 +18,22 @@ def pregunta_04():
      ('12', 3)]
 
     """
+    file_path = './files/input/data.csv'
+    try:
+        with open(file_path, mode='r', encoding='utf-8') as f:
+            data = f.readlines()
+
+            meses = {line.split()[2].split('-')[1]: 0 for line in data}
+
+            list(map(lambda line: meses.update({line.split()[2].split('-')[1]: meses[line.split()[2].split('-')[1]] + 1}), data))
+
+            return sorted(meses.items())
+
+    except FileNotFoundError:
+        print(f"Error: No se encontró el archivo en {file_path}")
+        return []
+
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        return []
+    

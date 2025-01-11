@@ -1,11 +1,3 @@
-"""
-Escriba el codigo que ejecute la accion solicitada en cada pregunta. Los
-datos requeridos se encuentran en el archivo data.csv. En este laboratorio
-solo puede utilizar las funciones y librerias basicas de python. No puede
-utilizar pandas, numpy o scipy.
-"""
-
-
 def pregunta_07():
     """
     Retorne una lista de tuplas que asocien las columnas 0 y 1. Cada tupla
@@ -25,3 +17,34 @@ def pregunta_07():
      (9, ['A', 'B', 'E', 'A', 'A', 'C'])]
 
     """
+    file_path = './files/input/data.csv'
+    try:
+        with open(file_path, 'r') as file:
+            data = file.readlines()
+
+        # Diccionario para almacenar las letras asociadas a cada valor de la columna 2
+        value_to_letters = {}
+
+        for line in data:
+            parts = line.strip().split('\t')
+            letter = parts[0]
+            value = int(parts[1])
+
+            if value not in value_to_letters:
+                value_to_letters[value] = []
+            value_to_letters[value].append(letter)
+
+        # Convertir el diccionario en una lista de tuplas y ordenar
+        result = sorted(
+            [(value, letters) for value, letters in value_to_letters.items()]
+        )
+
+        return result
+
+    except FileNotFoundError:
+        print(f"Error: No se encontró el archivo en {file_path}")
+        return []
+
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        return []

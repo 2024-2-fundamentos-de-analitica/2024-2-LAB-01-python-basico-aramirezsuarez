@@ -1,11 +1,3 @@
-"""
-Escriba el codigo que ejecute la accion solicitada en cada pregunta. Los
-datos requeridos se encuentran en el archivo data.csv. En este laboratorio
-solo puede utilizar las funciones y librerias basicas de python. No puede
-utilizar pandas, numpy o scipy.
-"""
-
-
 def pregunta_09():
     """
     Retorne un diccionario que contenga la cantidad de registros en que
@@ -21,6 +13,38 @@ def pregunta_09():
      'ggg': 13,
      'hhh': 16,
      'iii': 18,
-     'jjj': 18}}
-
+     'jjj': 18}
     """
+    file_path = './files/input/data.csv'
+    try:
+        with open(file_path, mode='r', encoding='utf-8') as f:
+            data = f.readlines()
+
+        result = {}
+
+        columna = [line.strip().split()[4].split(',') for line in data]
+
+        for c in columna:
+            for i in c:
+                try:
+                    key = i.split(':')[0]
+                    if key not in result:
+                        result[key] = 1
+                    else:
+                        result[key] += 1
+                except IndexError as e:
+                    print(f"Error al procesar el elemento '{i}': {e}")
+                    continue
+
+        result = dict(sorted(result.items()))
+        return result
+
+    except FileNotFoundError:
+        print(f"Error: No se encontró el archivo en {file_path}")
+        return {}
+
+    except Exception as e:
+        print(f"Se produjo un error: {e}")
+        return {}
+
+
